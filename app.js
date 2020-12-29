@@ -1,20 +1,23 @@
 const express = require('express');
+const morgan = require('morgan');
+const userRouter = require('./routes/userRoutes');
+const tourRouter = require('./routes/tourRoutes');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.status(200).send('Hello From Express App');
-});
+console.log("PROCESS ENV", process.env.NODE_ENV);
 
-app.get('/jsonData', (req, res) => {
-    res.status(200).json({ message: 'Hello', app: 'natours' });
-});
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+}
+app.use(express.json());
+app.use(express.static(`${__dirname}/public`));
+app.use((req, res, next) => {
+    console.log('Hello From Middleware...');
+    next();
+})
 
-app.post('/', (req, res) => {
-    res.status(200).send('Post method');
-});
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
-const port = 5000;
-app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
-});
+module.exports = app;
