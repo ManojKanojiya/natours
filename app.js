@@ -5,8 +5,6 @@ const tourRouter = require('./routes/tourRoutes');
 
 const app = express();
 
-console.log("PROCESS ENV", process.env.NODE_ENV);
-
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
