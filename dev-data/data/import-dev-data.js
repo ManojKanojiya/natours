@@ -12,7 +12,7 @@ mongoose.connect(DB, {
     useUnifiedTopology: true
 }).then(() => console.log("DB connected..."));
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 const importData = async () => {
     try {
@@ -21,6 +21,7 @@ const importData = async () => {
     } catch (err) {
         console.log(err)
     }
+    process.exit();
 }
 
 const deleteData = async () => {
@@ -30,6 +31,7 @@ const deleteData = async () => {
     } catch (err) {
         console.log(err)
     }
+    process.exit();
 }
 
 if (process.argv[2] === '--import') {
