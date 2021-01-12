@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -12,6 +13,10 @@ const tourRouter = require('./routes/tourRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet());
 if (process.env.NODE_ENV === 'development') {
@@ -39,10 +44,29 @@ app.use(hpp({
     ]
 }))
 
-app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
     console.log('Hello From Middleware...');
     next();
+})
+
+app.get('/', (req, res) => {
+    res.status(200).render('base', {
+        tour: 'The Forest Hiker',
+        name: 'Manoj'
+    });
+})
+
+
+app.get('/overview', (req, res) => {
+    res.status(200).render('overview', {
+        title: 'All Tours',
+    });
+})
+
+app.get('/tour', (req, res) => {
+    res.status(200).render('tour', {
+        title: 'The Forest Hiker Tour',
+    });
 })
 
 app.use('/api/v1/tours', tourRouter);
