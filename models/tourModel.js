@@ -87,7 +87,7 @@ const tourSchema = new mongoose.Schema({
         },
         coordinates: [Number],
         address: String,
-        discription: String
+        description: String
     },
     locations: [
         {
@@ -162,7 +162,7 @@ tourSchema.pre(/^find/, function (next) {
 })
 
 tourSchema.post(/^find/, function (docs, next) {
-    console.log(`Query took millisecond ${Date.now()} - ${this.start}`)
+    console.log(`Query took millisecond ${Date.now() - this.start}`)
     next();
 })
 
