@@ -35,6 +35,8 @@ router.route('/:id')
         .get(tourController.getTour)
         .patch(authController.protect,
                 authController.restrictTo('admin', 'lead-guide'),
+                tourController.uplodaTourImages,
+                tourController.resizeTourImages,
                 tourController.updateTour)
         .delete(authController.protect,
                 authController.restrictTo('admin', 'lead-guide'),
