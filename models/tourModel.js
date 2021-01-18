@@ -129,22 +129,27 @@ tourSchema.virtual('reviews', {
     localField: '_id'
 })
 
+tourSchema.virtual('mytours', {
+    ref: 'Booking',
+    foreignField: 'tour',
+    localField: '_id'
+})
 // Document middleware runs .save and .create method
 tourSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true });
     next();
 })
 
-// tourSchema.post('save', function (doc, next) {
-//     console.log(doc);
-//     next();
-// })
+tourSchema.post('save', function (doc, next) {
+    console.log(doc);
+    next();
+})
 
-// tourSchema.pre('save', async function (next) {
-//     const guidePromises = this.guides.map(async id => await User.findById(id));
-//     this.guides = await Promise.all(guidePromises);
-//     next();
-// })
+tourSchema.pre('save', async function (next) {
+    const guidePromises = this.guides.map(async id => await User.findById(id));
+    this.guides = await Promise.all(guidePromises);
+    next();
+})
 
 // Query middleware runs for query
 tourSchema.pre(/^find/, function (next) {
